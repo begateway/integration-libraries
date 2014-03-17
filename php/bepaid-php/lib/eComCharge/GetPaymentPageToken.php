@@ -1,5 +1,7 @@
 <?php
-class eComCharge_GetPaymentPageToken extends eComCharge_Api {
+namespace eComCharge;
+
+class GetPaymentPageToken extends ApiAbstract {
   public $customer;
   public $money;
   protected $_description;
@@ -15,20 +17,20 @@ class eComCharge_GetPaymentPageToken extends eComCharge_Api {
   protected $_hidden;
 
   public function __construct($shop_id, $shop_key) {
-    $this->customer = new eComCharge_Customer();
-    $this->money = new eComCharge_Money();
+    $this->customer = new Customer();
+    $this->money = new Money();
     $this->setPaymentTransactionType();
-    $this->_language = eComCharge_Language::getDefaultLanguage();
+    $this->_language = Language::getDefaultLanguage();
     $this->_readonly = array();
     $this->_hidden = array();
 
     parent::__construct($shop_id, $shop_key);
   }
-  protected function endpoint() {
+  protected function _endpoint() {
     return $this->_pp_service_url . '/ctp/api/checkouts';
   }
 
-  protected function build_request_message() {
+  protected function _buildRequestMessage() {
     $request = array(
       'checkout' => array(
         'transaction_type' => $this->getTransactionType(),
@@ -64,13 +66,13 @@ class eComCharge_GetPaymentPageToken extends eComCharge_Api {
       )
     );
 
-    eComCharge_Logger::getInstance()->to_log($request, get_class() . '::' . __FUNCTION__);
+    Logger::getInstance()->write($request, Logger::DEBUG, get_class() . '::' . __FUNCTION__);
 
     return $request;
   }
 
   public function submit() {
-    return new eComCharge_ResponseCheckout($this->remote_request());
+    return new ResponseCheckout($this->_remoteRequest());
   }
 
   public function getToken() {
@@ -138,10 +140,10 @@ class eComCharge_GetPaymentPageToken extends eComCharge_Api {
   }
 
   public function setLanguage($language_code) {
-    if (in_array($language_code, eComCharge_Language::getSupportedLanguages())) {
+    if (in_array($language_code, Language::getSupportedLanguages())) {
       $this->_language = $language_code;
     }else{
-      $this->_language = eComCharge_Language::getDefaultLanguage();
+      $this->_language = Language::getDefaultLanguage();
     }
   }
 
@@ -158,62 +160,62 @@ class eComCharge_GetPaymentPageToken extends eComCharge_Api {
   }
 
   public function setFirstNameReadonly(){
-    $this->_readonly = self::searchAndAdd($this->_readonly, 'first_name');
+    $this->_readonly = self::_searchAndAdd($this->_readonly, 'first_name');
   }
   public function unsetFirstNameReadonly(){
     $this->_readonly = array_diff($this->_readonly, array('first_name'));
   }
   public function setLastNameReadonly(){
-    $this->_readonly = self::searchAndAdd($this->_readonly, 'last_name');
+    $this->_readonly = self::_searchAndAdd($this->_readonly, 'last_name');
   }
   public function unsetLastNameReadonly(){
     $this->_readonly = array_diff($this->_readonly, array('last_name'));
   }
   public function setEmailReadonly(){
-    $this->_readonly = self::searchAndAdd($this->_readonly, 'email');
+    $this->_readonly = self::_searchAndAdd($this->_readonly, 'email');
   }
   public function unsetEmailReadonly(){
     $this->_readonly = array_diff($this->_readonly, array('email'));
   }
   public function setAddressReadonly(){
-    $this->_readonly = self::searchAndAdd($this->_readonly, 'address');
+    $this->_readonly = self::_searchAndAdd($this->_readonly, 'address');
   }
   public function unsetAddressReadonly(){
     $this->_readonly = array_diff($this->_readonly, array('address'));
   }
   public function setCityReadonly(){
-    $this->_readonly = self::searchAndAdd($this->_readonly, 'city');
+    $this->_readonly = self::_searchAndAdd($this->_readonly, 'city');
   }
   public function unsetCityReadonly(){
     $this->_readonly = array_diff($this->_readonly, array('city'));
   }
   public function setStateReadonly(){
-    $this->_readonly = self::searchAndAdd($this->_readonly, 'state');
+    $this->_readonly = self::_searchAndAdd($this->_readonly, 'state');
   }
   public function unsetStateReadonly(){
     $this->_readonly = array_diff($this->_readonly, array('state'));
   }
   public function setZipReadonly(){
-    $this->_readonly = self::searchAndAdd($this->_readonly, 'zip');
+    $this->_readonly = self::_searchAndAdd($this->_readonly, 'zip');
   }
   public function unsetZipReadonly(){
     $this->_readonly = array_diff($this->_readonly, array('zip'));
   }
   public function setPhoneReadonly(){
-    $this->_readonly = self::searchAndAdd($this->_readonly, 'phone');
+    $this->_readonly = self::_searchAndAdd($this->_readonly, 'phone');
   }
   public function unsetPhoneReadonly(){
     $this->_readonly = array_diff($this->_readonly, array('phone'));
   }
   public function setCountryReadonly(){
-    $this->_readonly = self::searchAndAdd($this->_readonly, 'country');
+    $this->_readonly = self::_searchAndAdd($this->_readonly, 'country');
   }
   public function unsetCountryReadonly(){
     $this->_readonly = array_diff($this->_readonly, array('country'));
   }
 
   public function setPhoneHidden() {
-    $this->_hidden = self::searchAndAdd($this->_hidden, 'phone');
+    $this->_hidden = self::_searchAndAdd($this->_hidden, 'phone');
   }
 
   public function unsetPhoneHidden() {
@@ -221,14 +223,14 @@ class eComCharge_GetPaymentPageToken extends eComCharge_Api {
   }
 
   public function setAddressHidden() {
-    $this->_hidden = self::searchAndAdd($this->_hidden, 'address');
+    $this->_hidden = self::_searchAndAdd($this->_hidden, 'address');
   }
 
   public function unsetAddressHidden() {
     $this->_hidden = array_diff($this->_hidden, array('address'));
   }
 
-  private function searchAndAdd($array, $value) {
+  private function _searchAndAdd($array, $value) {
     // search for $value in $array
     // if not found, adds $value to $array and returns $array
     // otherwise returns not altered $array

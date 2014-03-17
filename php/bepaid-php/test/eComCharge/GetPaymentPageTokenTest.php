@@ -1,5 +1,5 @@
 <?php
-class eComCharge_GetPaymentPageTokenTest extends UnitTestCase {
+class GetPaymentPageTokenTest extends UnitTestCase {
 
   public function test_setDescription() {
     $auth = $this->getTestObjectInstance();
@@ -71,7 +71,7 @@ class eComCharge_GetPaymentPageTokenTest extends UnitTestCase {
     $this->assertEqual($auth->getTransactionType(), 'authorization');
   }
 
-  public function test_build_request_message() {
+  public function test_buildRequestMessage() {
     $auth = $this->getTestObject();
     $arr = array(
       'checkout' => array(
@@ -108,11 +108,11 @@ class eComCharge_GetPaymentPageTokenTest extends UnitTestCase {
       )
     );
 
-    $reflection = new ReflectionClass( 'eComCharge_GetPaymentPageToken');
-    $method = $reflection->getMethod('build_request_message');
+    $reflection = new ReflectionClass( 'eComCharge\GetPaymentPageToken');
+    $method = $reflection->getMethod('_buildRequestMessage');
     $method->setAccessible(true);
 
-    $request = $method->invoke($auth, 'build_request_message');
+    $request = $method->invoke($auth, '_buildRequestMessage');
 
     $this->assertEqual($arr, $request);
   }
@@ -121,16 +121,16 @@ class eComCharge_GetPaymentPageTokenTest extends UnitTestCase {
 
     $auth = $this->getTestObjectInstance();
 
-    $reflection = new ReflectionClass('eComCharge_GetPaymentPageToken');
-    $method = $reflection->getMethod('endpoint');
+    $reflection = new ReflectionClass('eComCharge\GetPaymentPageToken');
+    $method = $reflection->getMethod('_endpoint');
     $method->setAccessible(true);
-    $url = $method->invoke($auth, 'endpoint');
+    $url = $method->invoke($auth, '_endpoint');
 
     $this->assertEqual($url, 'https://checkout.ecomcharge.com/ctp/api/checkouts');
 
   }
 
-  public function test_success_request() {
+  public function test_successTokenRequest() {
     $auth = $this->getTestObject();
 
     $amount = rand(0,10000) / 100;
@@ -139,13 +139,13 @@ class eComCharge_GetPaymentPageTokenTest extends UnitTestCase {
 
     $response = $auth->submit();
 
-    $this->assertTrue($response->is_valid());
-    $this->assertTrue($response->is_success());
+    $this->assertTrue($response->isValid());
+    $this->assertTrue($response->isSuccess());
     $this->assertNotNull($response->getToken());
 
   }
 
-  public function test_error_request() {
+  public function test_errorTokenRequest() {
 
     $auth = $this->getTestObject();
 
@@ -156,8 +156,8 @@ class eComCharge_GetPaymentPageTokenTest extends UnitTestCase {
 
     $response = $auth->submit();
 
-    $this->assertTrue($response->is_valid());
-    $this->assertTrue($response->is_error());
+    $this->assertTrue($response->isValid());
+    $this->assertTrue($response->isError());
 
   }
 
@@ -195,10 +195,10 @@ class eComCharge_GetPaymentPageTokenTest extends UnitTestCase {
   protected function getTestObjectInstance() {
     authorizeFromEnv();
 
-    $id = eComCharge_TestData::getShopId();
-    $key =  eComCharge_TestData::getShopKey();
+    $id = TestData::getShopId();
+    $key =  TestData::getShopKey();
 
-    return new eComCharge_GetPaymentPageToken($id, $key);
+    return new eComCharge\GetPaymentPageToken($id, $key);
   }
 
 

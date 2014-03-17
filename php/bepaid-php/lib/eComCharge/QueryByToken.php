@@ -1,8 +1,10 @@
 <?php
-class eComCharge_QueryByToken extends eComCharge_Api {
+namespace eComCharge;
+
+class QueryByToken extends ApiAbstract {
   protected $_token;
 
-  protected function endpoint() {
+  protected function _endpoint() {
     return $this->_pp_service_url . '/ctp/api/checkouts/' . $this->getToken();
   }
   public function setToken($token) {
@@ -11,12 +13,12 @@ class eComCharge_QueryByToken extends eComCharge_Api {
   public function getToken() {
     return $this->_token;
   }
-  protected function build_request_message() {
+  protected function _buildRequestMessage() {
     return '';
   }
 
   public function submit() {
-    return new eComCharge_ResponseCheckout($this->remote_request());
+    return new ResponseCheckout($this->_remoteRequest());
   }
 }
 ?>

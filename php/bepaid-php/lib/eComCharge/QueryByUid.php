@@ -1,8 +1,10 @@
 <?php
-class eComCharge_QueryByUid extends eComCharge_Api {
+namespace eComCharge;
+
+class QueryByUid extends ApiAbstract {
   protected $_uid;
 
-  protected function endpoint() {
+  protected function _endpoint() {
     return $this->_service_url . '/' . $this->getUid();
   }
   public function setUid($uid) {
@@ -11,7 +13,7 @@ class eComCharge_QueryByUid extends eComCharge_Api {
   public function getUid() {
     return $this->_uid;
   }
-  protected function build_request_message() {
+  protected function _buildRequestMessage() {
     return '';
   }
 }

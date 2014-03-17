@@ -1,5 +1,5 @@
 <?php
-class eComCharge_AuthorizationTest extends UnitTestCase {
+class AuthorizationTest extends UnitTestCase {
 
   public function test_setDescription() {
 
@@ -45,7 +45,7 @@ class eComCharge_AuthorizationTest extends UnitTestCase {
 
   }
 
-  public function test_build_request_message() {
+  public function test_buildRequestMessage() {
     $auth = $this->getTestObject();
     $arr = array(
       'request' => array(
@@ -83,11 +83,11 @@ class eComCharge_AuthorizationTest extends UnitTestCase {
       )
     );
 
-    $reflection = new ReflectionClass( 'eComCharge_Authorization');
-    $method = $reflection->getMethod('build_request_message');
+    $reflection = new ReflectionClass( 'eComCharge\Authorization');
+    $method = $reflection->getMethod('_buildRequestMessage');
     $method->setAccessible(true);
 
-    $request = $method->invoke($auth, 'build_request_message');
+    $request = $method->invoke($auth, '_buildRequestMessage');
 
     $this->assertEqual($arr, $request);
   }
@@ -96,16 +96,16 @@ class eComCharge_AuthorizationTest extends UnitTestCase {
 
     $auth = $this->getTestObjectInstance();
 
-    $reflection = new ReflectionClass('eComCharge_Authorization');
-    $method = $reflection->getMethod('endpoint');
+    $reflection = new ReflectionClass('eComCharge\Authorization');
+    $method = $reflection->getMethod('_endpoint');
     $method->setAccessible(true);
-    $url = $method->invoke($auth, 'endpoint');
+    $url = $method->invoke($auth, '_endpoint');
 
     $this->assertEqual($url, 'https://processing.ecomcharge.com/transactions/authorizations');
 
   }
 
-  public function test_success_request() {
+  public function test_successAuthorization() {
     $auth = $this->getTestObject();
 
     $amount = rand(0,10000) / 100;
@@ -115,8 +115,8 @@ class eComCharge_AuthorizationTest extends UnitTestCase {
 
     $response = $auth->submit();
 
-    $this->assertTrue($response->is_valid());
-    $this->assertTrue($response->is_success());
+    $this->assertTrue($response->isValid());
+    $this->assertTrue($response->isSuccess());
     $this->assertEqual($response->getMessage(), 'Successfully processed');
     $this->assertNotNull($response->getUid());
     $this->assertEqual($response->getStatus(), 'successful');
@@ -124,7 +124,7 @@ class eComCharge_AuthorizationTest extends UnitTestCase {
 
   }
 
-  public function test_incomplete_request() {
+  public function test_incompleteAuthorization() {
     $auth = $this->getTestObject(true);
 
     $amount = rand(0,10000) / 100;
@@ -135,8 +135,8 @@ class eComCharge_AuthorizationTest extends UnitTestCase {
 
     $response = $auth->submit();
 
-    $this->assertTrue($response->is_valid());
-    $this->assertTrue($response->is_incomplete());
+    $this->assertTrue($response->isValid());
+    $this->assertTrue($response->isIncomplete());
     $this->assertFalse($response->getMessage());
     $this->assertNotNull($response->getUid());
     $this->assertNotNull($response->getResponse()->transaction->redirect_url);
@@ -146,7 +146,7 @@ class eComCharge_AuthorizationTest extends UnitTestCase {
 
   }
 
-  public function test_failed_request() {
+  public function test_failedAuthorization() {
     $auth = $this->getTestObject();
 
     $amount = rand(0,10000) / 100;
@@ -157,8 +157,8 @@ class eComCharge_AuthorizationTest extends UnitTestCase {
 
     $response = $auth->submit();
 
-    $this->assertTrue($response->is_valid());
-    $this->assertTrue($response->is_failed());
+    $this->assertTrue($response->isValid());
+    $this->assertTrue($response->isFailed());
     $this->assertEqual($response->getMessage(), 'Authorization was declined');
     $this->assertNotNull($response->getUid());
     $this->assertEqual($response->getStatus(), 'failed');
@@ -166,7 +166,7 @@ class eComCharge_AuthorizationTest extends UnitTestCase {
 
   }
 
-  public function test_error_request() {
+  public function test_errorAuthorization() {
 
     $auth = $this->getTestObject();
 
@@ -178,8 +178,8 @@ class eComCharge_AuthorizationTest extends UnitTestCase {
 
     $response = $auth->submit();
 
-    $this->assertTrue($response->is_valid());
-    $this->assertTrue($response->is_error());
+    $this->assertTrue($response->isValid());
+    $this->assertTrue($response->isError());
     $this->assertEqual($response->getMessage(), 'Date is expired.');
     $this->assertEqual($response->getStatus(), 'error');
 
@@ -217,15 +217,15 @@ class eComCharge_AuthorizationTest extends UnitTestCase {
   protected function getTestObjectInstance($threed = false) {
     authorizeFromEnv();
 
-    $id = eComCharge_TestData::getShopId();
-    $key =  eComCharge_TestData::getShopKey();
+    $id = TestData::getShopId();
+    $key =  TestData::getShopKey();
 
     if ($threed) {
-      $id = eComCharge_TestData::getShopId3d();
-      $key =  eComCharge_TestData::getShopKey3d();
+      $id = TestData::getShopId3d();
+      $key = TestData::getShopKey3d();
     }
 
-    return new eComCharge_Authorization($id, $key);
+    return new eComCharge\Authorization($id, $key);
   }
 
 

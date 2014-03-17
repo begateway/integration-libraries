@@ -1,15 +1,15 @@
 <?php
-class eComCharge_WebhookTest extends UnitTestCase {
+class WebhookTest extends UnitTestCase {
 
   public function test_WebhookIsSentWithCorrectCredentials() {
     $w = $this->getTestObjectInstance();
-    $s = eComCharge_TestData::getShopId();
-    $k = eComCharge_TestData::getShopKey();
+    $s = TestData::getShopId();
+    $k = TestData::getShopKey();
 
     $_SERVER['PHP_AUTH_USER'] = $s;
     $_SERVER['PHP_AUTH_PW'] = $k;
 
-    $this->assertTrue($w->is_authorized());
+    $this->assertTrue($w->isAuthorized());
   }
   public function test_WebhookIsSentWithIncorrectCredentials() {
     $w = $this->getTestObjectInstance();
@@ -19,19 +19,19 @@ class eComCharge_WebhookTest extends UnitTestCase {
     $_SERVER['PHP_AUTH_USER'] = $s;
     $_SERVER['PHP_AUTH_PW'] = $k;
 
-    $this->assertFalse($w->is_authorized());
+    $this->assertFalse($w->isAuthorized());
   }
 
   public function test_RequestIsValidAndItIsSuccess() {
     $w = $this->getTestObjectInstance();
 
-    $reflection = new ReflectionClass('eComCharge_Webhook');
+    $reflection = new ReflectionClass('eComCharge\Webhook');
     $property = $reflection->getProperty('_response');
     $property->setAccessible(true);
     $property->setValue($w,json_decode($this->webhookMessage()));
 
-    $this->assertTrue($w->is_valid());
-    $this->assertTrue($w->is_success());
+    $this->assertTrue($w->isValid());
+    $this->assertTrue($w->isSuccess());
     $this->assertEqual($w->getMessage(), 'Successfully processed');
     $this->assertNotNull($w->getUid());
   }
@@ -40,13 +40,13 @@ class eComCharge_WebhookTest extends UnitTestCase {
   public function test_RequestIsValidAndItIsFailed() {
     $w = $this->getTestObjectInstance();
 
-    $reflection = new ReflectionClass('eComCharge_Webhook');
+    $reflection = new ReflectionClass('eComCharge\Webhook');
     $property = $reflection->getProperty('_response');
     $property->setAccessible(true);
     $property->setValue($w,json_decode($this->webhookMessage('failed')));
 
-    $this->assertTrue($w->is_valid());
-    $this->assertTrue($w->is_failed());
+    $this->assertTrue($w->isValid());
+    $this->assertTrue($w->isFailed());
     $this->assertEqual($w->getMessage(), 'Payment was declined');
     $this->assertNotNull($w->getUid());
     $this->assertEqual($w->getStatus(), 'failed');
@@ -56,14 +56,14 @@ class eComCharge_WebhookTest extends UnitTestCase {
   public function test_RequestIsValidAndItIsTest() {
     $w = $this->getTestObjectInstance();
 
-    $reflection = new ReflectionClass('eComCharge_Webhook');
+    $reflection = new ReflectionClass('eComCharge\Webhook');
     $property = $reflection->getProperty('_response');
     $property->setAccessible(true);
     $property->setValue($w,json_decode($this->webhookMessage('failed', true)));
 
-    $this->assertTrue($w->is_valid());
-    $this->assertTrue($w->is_failed());
-    $this->assertTrue($w->is_test());
+    $this->assertTrue($w->isValid());
+    $this->assertTrue($w->isFailed());
+    $this->assertTrue($w->isTest());
     $this->assertEqual($w->getMessage(), 'Payment was declined');
     $this->assertNotNull($w->getUid());
     $this->assertEqual($w->getStatus(), 'failed');
@@ -73,21 +73,21 @@ class eComCharge_WebhookTest extends UnitTestCase {
   public function test_NotValidRequestReceived() {
     $w = $this->getTestObjectInstance();
 
-    $reflection = new ReflectionClass('eComCharge_Webhook');
+    $reflection = new ReflectionClass('eComCharge\Webhook');
     $property = $reflection->getProperty('_response');
     $property->setAccessible(true);
     $property->setValue($w,json_decode(''));
 
-    $this->assertFalse($w->is_valid());
+    $this->assertFalse($w->isValid());
   }
 
   protected function getTestObjectInstance() {
     authorizeFromEnv();
 
-    $id = eComCharge_TestData::getShopId();
-    $key =  eComCharge_TestData::getShopKey();
+    $id = TestData::getShopId();
+    $key =  TestData::getShopKey();
 
-    return new eComCharge_Webhook($id, $key);
+    return new eComCharge\Webhook($id, $key);
   }
 
   private function webhookMessage($status = 'successful', $test = true ) {

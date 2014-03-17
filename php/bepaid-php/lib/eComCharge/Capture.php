@@ -1,4 +1,6 @@
 <?php
-class eComCharge_Capture extends eComCharge_ChildTransaction {
+namespace eComCharge;
+
+class Capture extends ChildTransaction {
 }
 ?>

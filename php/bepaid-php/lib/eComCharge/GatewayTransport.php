@@ -1,14 +1,17 @@
 <?php
-class eComCharge_GatewayTransport {
+namespace eComCharge;
+
+class GatewayTransport {
 
     public static function submit($shop_id, $shop_key, $host, $t_request) {
 
         $process = curl_init($host);
         $json = json_encode($t_request);
 
-        eComCharge_Logger::getInstance()->to_log("Request to $host", eComCharge_Logger::DEBUG, get_class() );
-        eComCharge_Logger::getInstance()->to_log("with Shop Id $shop_id & Shop key $shop_key", eComCharge_Logger::DEBUG, get_class() );
-        eComCharge_Logger::getInstance()->to_log("with message" .  $json, eComCharge_Logger::DEBUG, get_class());
+        Logger::getInstance()->write("Request to $host", Logger::DEBUG, get_class() );
+        Logger::getInstance()->write("with Shop Id $shop_id & Shop key $shop_key", Logger::DEBUG, get_class() );
+        if (!empty($json))
+          Logger::getInstance()->write("with message " .  $json, Logger::DEBUG, get_class());
 
         if (!empty($t_request)) {
           curl_setopt($process, CURLOPT_HTTPHEADER, array('Accept: application/json', 'Content-type: application/json'));
@@ -27,7 +30,7 @@ class eComCharge_GatewayTransport {
           throw new Exception("cURL error " . $error);
         }
 
-        eComCharge_Logger::getInstance()->to_log("Response $response", eComCharge_Logger::DEBUG, get_class() );
+        Logger::getInstance()->write("Response $response", Logger::DEBUG, get_class() );
         return $response;
     }
 }

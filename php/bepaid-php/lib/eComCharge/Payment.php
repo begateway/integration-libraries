@@ -1,4 +1,6 @@
 <?php
-class eComCharge_Payment extends eComCharge_Authorization {
+namespace eComCharge;
+
+class Payment extends Authorization {
 }
 ?>

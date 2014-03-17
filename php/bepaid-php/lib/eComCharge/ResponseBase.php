@@ -1,14 +1,16 @@
 <?php
-abstract class eComCharge_ResponseBase {
+namespace eComCharge;
+
+abstract class ResponseBase {
 
   protected $_response;
 
   public function __construct($message){
     $this->_response = json_decode($message);
   }
-  public abstract function is_success();
+  public abstract function isSuccess();
 
-  public function is_error() {
+  public function isError() {
     if (!is_object($this->getResponse()))
       return true;
 
@@ -21,7 +23,7 @@ abstract class eComCharge_ResponseBase {
     return false;
   }
 
-  public function is_valid() {
+  public function isValid() {
     return !($this->_response === false || $this->_response == null);
   }
 

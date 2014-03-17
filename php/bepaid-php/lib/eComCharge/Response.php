@@ -1,19 +1,21 @@
 <?php
-class eComCharge_Response extends eComCharge_ResponseBase {
+namespace eComCharge;
 
-  public function is_success() {
+class Response extends ResponseBase {
+
+  public function isSuccess() {
     return $this->getStatus() == 'successful';
   }
 
-  public function is_failed() {
+  public function isFailed() {
     return $this->getStatus() == 'failed';
   }
 
-  public function is_incomplete() {
+  public function isIncomplete() {
     return $this->getStatus() == 'incomplete';
   }
 
-  public function is_test() {
+  public function isTest() {
     if (isset($this->getResponse()->transaction))
       return $this->getResponse()->transaction->test == true;
 
@@ -23,7 +25,7 @@ class eComCharge_Response extends eComCharge_ResponseBase {
   public function getStatus() {
     if (is_object($this->getResponse()) && isset($this->getResponse()->transaction)) {
       return $this->getResponse()->transaction->status;
-    }elseif ($this->is_error()) {
+    }elseif ($this->isError()) {
       return 'error';
     }
     return false;

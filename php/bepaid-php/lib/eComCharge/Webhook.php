@@ -1,5 +1,7 @@
 <?php
-class eComCharge_Webhook extends eComCharge_Response {
+namespace eComCharge;
+
+class Webhook extends Response {
   protected $_shop_id;
 
   protected $_shop_key;
@@ -12,21 +14,21 @@ class eComCharge_Webhook extends eComCharge_Response {
     $this->decodeReceivedJson();
   }
 
-  public function is_authorized() {
-    return $this->getShopId() == $this->_shop_id && $this->getShopKey() == $this->_shop_key;
+  public function isAuthorized() {
+    return $this->_getShopIdFromAuthorization() == $this->_shop_id && $this->_getShopKeyFromAuthorization() == $this->_shop_key;
   }
 
   public function decodeReceivedJson() {
     $this->_response = json_decode(file_get_contents($this->_json_in));
   }
 
-  private function getShopId() {
+  private function _getShopIdFromAuthorization() {
     if (isset($_SERVER['PHP_AUTH_USER']))
       return $_SERVER['PHP_AUTH_USER'];
     return '';
   }
 
-  private function getShopKey() {
+  private function _getShopKeyFromAuthorization() {
     if (isset($_SERVER['PHP_AUTH_PW']))
       return $_SERVER['PHP_AUTH_PW'];
     return '';

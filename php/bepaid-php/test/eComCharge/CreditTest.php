@@ -1,5 +1,5 @@
 <?php
-class eComCharge_CreditTest extends UnitTestCase {
+class CreditTest extends UnitTestCase {
 
  public function test_setDescription() {
 
@@ -22,7 +22,7 @@ class eComCharge_CreditTest extends UnitTestCase {
     $this->assertEqual($auth->getTrackingId(), $tracking_id);
   }
 
-  public function test_build_request_message() {
+  public function test_buildRequestMessage() {
     $transaction = $this->getTestObject();
     $arr = array(
       'request' => array(
@@ -36,11 +36,11 @@ class eComCharge_CreditTest extends UnitTestCase {
       )
     );
 
-    $reflection = new ReflectionClass( 'eComCharge_Credit' );
-    $method = $reflection->getMethod('build_request_message');
+    $reflection = new ReflectionClass( 'eComCharge\Credit' );
+    $method = $reflection->getMethod('_buildRequestMessage');
     $method->setAccessible(true);
 
-    $request = $method->invoke($transaction, 'build_request_message');
+    $request = $method->invoke($transaction, '_buildRequestMessage');
 
     $this->assertEqual($arr, $request);
   }
@@ -49,16 +49,16 @@ class eComCharge_CreditTest extends UnitTestCase {
 
     $auth = $this->getTestObjectInstance();
 
-    $reflection = new ReflectionClass('eComCharge_Credit');
-    $method = $reflection->getMethod('endpoint');
+    $reflection = new ReflectionClass('eComCharge\Credit');
+    $method = $reflection->getMethod('_endpoint');
     $method->setAccessible(true);
-    $url = $method->invoke($auth, 'endpoint');
+    $url = $method->invoke($auth, '_endpoint');
 
     $this->assertEqual($url, 'https://processing.ecomcharge.com/transactions/credits');
 
   }
 
-  public function test_success_request() {
+  public function test_successCreditRequest() {
 
     $amount = rand(0,10000);
 
@@ -74,14 +74,14 @@ class eComCharge_CreditTest extends UnitTestCase {
 
     $t_response = $transaction->submit();
 
-    $this->assertTrue($t_response->is_valid());
-    $this->assertTrue($t_response->is_success());
+    $this->assertTrue($t_response->isValid());
+    $this->assertTrue($t_response->isSuccess());
     $this->assertNotNull($t_response->getUid());
     $this->assertEqual($t_response->getMessage(),'Successfully processed');
 
   }
 
-  public function test_error_request() {
+  public function test_errorCreditRequest() {
     $amount = rand(0,10000);
 
     $parent = $this->runParentTransaction($amount);
@@ -96,8 +96,8 @@ class eComCharge_CreditTest extends UnitTestCase {
 
     $t_response = $transaction->submit();
 
-    $this->assertTrue($t_response->is_valid());
-    $this->assertTrue($t_response->is_error());
+    $this->assertTrue($t_response->isValid());
+    $this->assertTrue($t_response->isError());
     $this->assertTrue(preg_match('/Reason can\'t be blank./', $t_response->getMessage()));
 
   }
@@ -105,7 +105,7 @@ class eComCharge_CreditTest extends UnitTestCase {
   protected function runParentTransaction($amount = 10.00 ) {
     authorizeFromEnv();
 
-    $transaction = new eComCharge_Payment(eComCharge_TestData::getShopId(), eComCharge_TestData::getShopKey());
+    $transaction = new eComCharge\Payment(TestData::getShopId(), TestData::getShopKey());
 
     $transaction->money->setAmount($amount);
     $transaction->money->setCurrency('EUR');
@@ -146,10 +146,10 @@ class eComCharge_CreditTest extends UnitTestCase {
   protected function getTestObjectInstance() {
     authorizeFromEnv();
 
-    $id = eComCharge_TestData::getShopId();
-    $key =  eComCharge_TestData::getShopKey();
+    $id = TestData::getShopId();
+    $key =  TestData::getShopKey();
 
-    return new eComCharge_Credit($id, $key);
+    return new eComCharge\Credit($id, $key);
   }
 }
 ?>

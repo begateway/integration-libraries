@@ -1,8 +1,10 @@
 <?php
-class eComCharge_QueryByTrackingId extends eComCharge_Api {
+namespace eComCharge;
+
+class QueryByTrackingId extends ApiAbstract {
   protected $_tracking_id;
 
-  protected function endpoint() {
+  protected function _endpoint() {
     return $this->_service_url . '/tracking_id/' . $this->getTrackingId();
   }
   public function setTrackingId($tracking_id) {
@@ -11,7 +13,7 @@ class eComCharge_QueryByTrackingId extends eComCharge_Api {
   public function getTrackingId() {
     return $this->_tracking_id;
   }
-  protected function build_request_message() {
+  protected function _buildRequestMessage() {
     return '';
   }
 }

@@ -1,5 +1,7 @@
 <?php
-class eComCharge_Authorization extends eComCharge_Api {
+namespace eComCharge;
+
+class Authorization extends ApiAbstract {
   public $customer;
   public $card;
   public $money;
@@ -9,9 +11,9 @@ class eComCharge_Authorization extends eComCharge_Api {
   protected $_return_url;
 
   public function __construct($shop_id, $shop_key) {
-    $this->customer = new eComCharge_Customer();
-    $this->money = new eComCharge_Money();
-    $this->card = new eComCharge_Card();
+    $this->customer = new Customer();
+    $this->money = new Money();
+    $this->card = new Card();
 
     parent::__construct($shop_id, $shop_key);
   }
@@ -44,7 +46,7 @@ class eComCharge_Authorization extends eComCharge_Api {
     return $this->_return_url;
   }
 
-  protected function build_request_message() {
+  protected function _buildRequestMessage() {
     $request = array(
       'request' => array(
         'amount' => $this->money->getCents(),
@@ -79,7 +81,7 @@ class eComCharge_Authorization extends eComCharge_Api {
       )
     );
 
-    eComCharge_Logger::getInstance()->to_log($request, eComCharge_Logger::DEBUG, get_class() . '::' . __FUNCTION__);
+    Logger::getInstance()->write($request, Logger::DEBUG, get_class() . '::' . __FUNCTION__);
 
     return $request;
   }

@@ -1,5 +1,6 @@
 <?php
-class eComCharge_CaptureTest extends UnitTestCase {
+
+class CaptureTest extends UnitTestCase {
 
   public function test_setParentUid() {
     $transaction = $this->getTestObjectInstance();
@@ -10,7 +11,7 @@ class eComCharge_CaptureTest extends UnitTestCase {
     $this->assertEqual($uid, $transaction->getParentUid());
   }
 
-  public function test_build_request_message() {
+  public function test_buildRequestMessage() {
     $transaction = $this->getTestObject();
     $arr = array(
       'request' => array(
@@ -19,11 +20,11 @@ class eComCharge_CaptureTest extends UnitTestCase {
       )
     );
 
-    $reflection = new ReflectionClass( 'eComCharge_Capture' );
-    $method = $reflection->getMethod('build_request_message');
+    $reflection = new ReflectionClass( 'eComCharge\Capture' );
+    $method = $reflection->getMethod('_buildRequestMessage');
     $method->setAccessible(true);
 
-    $request = $method->invoke($transaction, 'build_request_message');
+    $request = $method->invoke($transaction, '_buildRequestMessage');
 
     $this->assertEqual($arr, $request);
   }
@@ -32,16 +33,16 @@ class eComCharge_CaptureTest extends UnitTestCase {
 
     $auth = $this->getTestObjectInstance();
 
-    $reflection = new ReflectionClass('eComCharge_Capture');
-    $method = $reflection->getMethod('endpoint');
+    $reflection = new ReflectionClass('eComCharge\Capture');
+    $method = $reflection->getMethod('_endpoint');
     $method->setAccessible(true);
-    $url = $method->invoke($auth, 'endpoint');
+    $url = $method->invoke($auth, '_endpoint');
 
     $this->assertEqual($url, 'https://processing.ecomcharge.com/transactions/captures');
 
   }
 
-  public function test_success_request() {
+  public function test_successCapture() {
 
     $amount = rand(0,10000);
 
@@ -54,15 +55,15 @@ class eComCharge_CaptureTest extends UnitTestCase {
 
     $t_response = $transaction->submit();
 
-    $this->assertTrue($t_response->is_valid());
-    $this->assertTrue($t_response->is_success());
+    $this->assertTrue($t_response->isValid());
+    $this->assertTrue($t_response->isSuccess());
     $this->assertNotNull($t_response->getUid());
     $this->assertEqual($t_response->getMessage(),'Successfully processed');
     $this->assertEqual($t_response->getResponse()->transaction->parent_uid,$parent->getUid());
 
   }
 
-  public function test_error_request() {
+  public function test_errorCapture() {
     $amount = rand(0,10000);
 
     $parent = $this->runParentTransaction($amount);
@@ -74,8 +75,8 @@ class eComCharge_CaptureTest extends UnitTestCase {
 
     $t_response = $transaction->submit();
 
-    $this->assertTrue($t_response->is_valid());
-    $this->assertTrue($t_response->is_error());
+    $this->assertTrue($t_response->isValid());
+    $this->assertTrue($t_response->isError());
     $this->assertTrue(preg_match('/Amount can\'t be greater than/', $t_response->getMessage()));
 
   }
@@ -83,7 +84,7 @@ class eComCharge_CaptureTest extends UnitTestCase {
   protected function runParentTransaction($amount = 10.00 ) {
     authorizeFromEnv();
 
-    $transaction = new eComCharge_Authorization(eComCharge_TestData::getShopId(), eComCharge_TestData::getShopKey());
+    $transaction = new eComCharge\Authorization(TestData::getShopId(), TestData::getShopKey());
 
     $transaction->money->setAmount($amount);
     $transaction->money->setCurrency('EUR');
@@ -122,10 +123,10 @@ class eComCharge_CaptureTest extends UnitTestCase {
   protected function getTestObjectInstance() {
     authorizeFromEnv();
 
-    $id = eComCharge_TestData::getShopId();
-    $key =  eComCharge_TestData::getShopKey();
+    $id = TestData::getShopId();
+    $key =  TestData::getShopKey();
 
-    return new eComCharge_Capture($id, $key);
+    return new eComCharge\Capture($id, $key);
   }
 }
 ?>

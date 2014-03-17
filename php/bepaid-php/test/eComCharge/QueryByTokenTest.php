@@ -1,5 +1,5 @@
 <?php
-class eComCharge_QueryByTokenTest extends UnitTestCase {
+class QueryByTokenTest extends UnitTestCase {
 
   public function test_setToken() {
     $q = $this->getTestObjectInstance();
@@ -14,16 +14,16 @@ class eComCharge_QueryByTokenTest extends UnitTestCase {
     $q = $this->getTestObjectInstance();
     $q->setToken('1234');
 
-    $reflection = new ReflectionClass('eComCharge_QueryByToken');
-    $method = $reflection->getMethod('endpoint');
+    $reflection = new ReflectionClass('eComCharge\QueryByToken');
+    $method = $reflection->getMethod('_endpoint');
     $method->setAccessible(true);
-    $url = $method->invoke($q, 'endpoint');
+    $url = $method->invoke($q, '_endpoint');
 
     $this->assertEqual($url, 'https://checkout.ecomcharge.com/ctp/api/checkouts/1234');
 
   }
 
-  public function test_query_request() {
+  public function test_queryRequest() {
     $amount = rand(0,10000);
 
     $parent = $this->runParentTransaction($amount);
@@ -34,19 +34,19 @@ class eComCharge_QueryByTokenTest extends UnitTestCase {
 
     $response = $q->submit();
 
-    $this->assertTrue($response->is_valid());
+    $this->assertTrue($response->isValid());
     $this->assertNotNull($response->getToken(), $parent->getToken());
 
   }
 
-  public function test_query_response_for_unknown_uid() {
+  public function test_queryResponseForUnknownUid() {
     $q = $this->getTestObjectInstance();
 
     $q->setToken('1234567890qwerty');
 
     $response = $q->submit();
 
-    $this->assertTrue($response->is_valid());
+    $this->assertTrue($response->isValid());
 
     $this->assertEqual($response->getMessage(), 'Record not found');
   }
@@ -54,7 +54,7 @@ class eComCharge_QueryByTokenTest extends UnitTestCase {
   protected function runParentTransaction($amount = 10.00 ) {
     authorizeFromEnv();
 
-    $transaction = new eComCharge_GetPaymentPageToken(eComCharge_TestData::getShopId(), eComCharge_TestData::getShopKey());
+    $transaction = new eComCharge\GetPaymentPageToken(TestData::getShopId(), TestData::getShopKey());
 
     $url = 'http://www.example.com';
 
@@ -84,10 +84,10 @@ class eComCharge_QueryByTokenTest extends UnitTestCase {
   protected function getTestObjectInstance() {
     authorizeFromEnv();
 
-    $id = eComCharge_TestData::getShopId();
-    $key =  eComCharge_TestData::getShopKey();
+    $id = TestData::getShopId();
+    $key =  TestData::getShopKey();
 
-    return new eComCharge_QueryByToken($id, $key);
+    return new eComCharge\QueryByToken($id, $key);
   }
 }
 ?>

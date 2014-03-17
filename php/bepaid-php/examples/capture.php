@@ -1,14 +1,17 @@
 <?php
+namespace eComCharge;
 
 require_once __DIR__ . '/../lib/ecomcharge.php';
 require_once __DIR__ . '/test_shop_data.php';
 
 
-eComCharge_Logger::getInstance()->setLogLevel(eComCharge_Logger::DEBUG);
+Logger::getInstance()->setLogLevel(Logger::DEBUG);
 
-$transaction = new eComCharge_Authorization(SHOP_ID, SHOP_SECRET_KEY);
+$transaction = new Authorization(SHOP_ID, SHOP_SECRET_KEY);
 
-$transaction->money->setAmount(12.33);
+$amount = rand(100, 10000);
+
+$transaction->money->setAmount($amount);
 $transaction->money->setCurrency('EUR');
 $transaction->setDescription('test');
 $transaction->setTrackingId('my_custom_variable');
@@ -34,17 +37,17 @@ $response = $transaction->submit();
 print("Transaction message: " . $response->getMessage() . PHP_EOL);
 print("Transaction status: " . $response->getStatus(). PHP_EOL);
 
-if ($response->is_success() ) {
+if ($response->isSuccess() ) {
   print("Transaction UID: " . $response->getUid() . PHP_EOL);
   print("Trying to Capture transaction " . $response->getUid() . PHP_EOL);
 
-  $capture = new eComCharge_Capture(SHOP_ID, SHOP_SECRET_KEY);
+  $capture = new Capture(SHOP_ID, SHOP_SECRET_KEY);
   $capture->setParentUid($response->getUid());
   $capture->money->setAmount($transaction->money->getAmount());
 
   $capture_response = $capture->submit();
 
-  if ($capture_response->is_success()) {
+  if ($capture_response->isSuccess()) {
     print("Captured successfuly. Captured transaction UID " . $capture_response->getUid() . PHP_EOL);
   }else{
     print("Problem to capture" . PHP_EOL);

@@ -1,5 +1,7 @@
 <?php
-class eComCharge_Logger {
+namespace eComCharge;
+
+class Logger {
 
   const INFO = 0;
   const WARNING = 1;
@@ -13,7 +15,7 @@ class eComCharge_Logger {
     $this->_level = self::INFO;
   }
 
-  public function to_log($msg, $level = self::INFO, $place = '') {
+  public function write($msg, $level = self::INFO, $place = '') {
 
     $p = '';
     if (!empty($place)) { $p = "( $place )"; }

@@ -1,4 +1,6 @@
 <?php
-class eComCharge_Void extends eComCharge_ChildTransaction {
+namespace eComCharge;
+
+class Void extends ChildTransaction {
 }
 ?>

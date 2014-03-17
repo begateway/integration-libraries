@@ -11,7 +11,7 @@ if (!$ok) {
   exit(1);
 }
 
-abstract class eComCharge_TestData {
+abstract class TestData {
   public static $_shop_id;
   public static $_shop_key;
   public static $_shop_id_3d;
@@ -66,10 +66,10 @@ function authorizeFromEnv()
   if (!$shop_key_3d)
     $shop_key_3d = 'b038f3190fb0a4463a2bfee3413b5f53b66b93b643c3286078efd4dc9ce0eb36';
 
-  eComCharge_TestData::setShopId($shop_id);
-  eComCharge_TestData::setShopKey($shop_key);
-  eComCharge_TestData::setShopId3d($shop_id_3d);
-  eComCharge_TestData::setShopKey3d($shop_key_3d);
+  TestData::setShopId($shop_id);
+  TestData::setShopKey($shop_key);
+  TestData::setShopId3d($shop_id_3d);
+  TestData::setShopKey3d($shop_key_3d);
 }
 
 
@@ -84,7 +84,7 @@ error_reporting(E_ALL | E_STRICT);
 require_once(dirname(__FILE__) . '/../lib/ecomcharge.php');
 
 
-#eComCharge_Logger::getInstance()->setLogLevel(eComCharge_Logger::DEBUG);
+eComCharge\Logger::getInstance()->setLogLevel(eComCharge\Logger::DEBUG);
 
 require_once(dirname(__FILE__) . '/eComCharge/AuthorizationTest.php');
 require_once(dirname(__FILE__) . '/eComCharge/PaymentTest.php');

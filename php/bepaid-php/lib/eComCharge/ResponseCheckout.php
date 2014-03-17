@@ -1,12 +1,14 @@
 <?php
-class eComCharge_ResponseCheckout extends eComCharge_ResponseBase {
+namespace eComCharge;
 
-  public function is_success() {
+class ResponseCheckout extends ResponseBase {
+
+  public function isSuccess() {
     return is_object($this->getResponse()->checkout);
   }
 
-  public function is_error() {
-    return parent::is_error() || $this->getResponse()->checkout->status == 'error';
+  public function isError() {
+    return parent::isError() || $this->getResponse()->checkout->status == 'error';
   }
 
   public function getMessage() {
@@ -14,8 +16,8 @@ class eComCharge_ResponseCheckout extends eComCharge_ResponseBase {
       return $this->getResponse()->message;
     }elseif (isset($this->getResponse()->response) && isset($this->getResponse()->response->message)) {
       return $this->getResponse()->response->message;
-    }elseif ($this->is_error()) {
-      return $this->compileErrors();
+    }elseif ($this->isError()) {
+      return $this->_compileErrors();
     }else{
       return '';
     }
@@ -25,7 +27,7 @@ class eComCharge_ResponseCheckout extends eComCharge_ResponseBase {
     return $this->getResponse()->checkout->token;
   }
 
-  private function compileErrors() {
+  private function _compileErrors() {
     return 'there are errors in request parameters';
   }
 

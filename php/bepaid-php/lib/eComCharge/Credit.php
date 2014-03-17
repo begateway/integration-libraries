@@ -1,13 +1,15 @@
 <?php
-class eComCharge_Credit extends eComCharge_Api {
+namespace eComCharge;
+
+class Credit extends ApiAbstract {
   public $card;
   public $money;
   protected $_description;
   protected $_tracking_id;
 
   public function __construct($shop_id, $shop_key) {
-    $this->money = new eComCharge_Money();
-    $this->card = new eComCharge_Card();
+    $this->money = new Money();
+    $this->card = new Card();
 
     parent::__construct($shop_id, $shop_key);
   }
@@ -26,7 +28,7 @@ class eComCharge_Credit extends eComCharge_Api {
     return $this->_tracking_id;
   }
 
-  protected function build_request_message() {
+  protected function _buildRequestMessage() {
     $request = array(
       'request' => array(
         'amount' => $this->money->getCents(),
@@ -39,7 +41,7 @@ class eComCharge_Credit extends eComCharge_Api {
       )
     );
 
-    eComCharge_Logger::getInstance()->to_log($request, eComCharge_Logger::DEBUG, get_class() . '::' . __FUNCTION__);
+    Logger::getInstance()->write($request, Logger::DEBUG, get_class() . '::' . __FUNCTION__);
 
     return $request;
   }

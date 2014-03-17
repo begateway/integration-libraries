@@ -1,10 +1,12 @@
 <?php
-abstract class eComCharge_ChildTransaction extends eComCharge_Api {
+namespace eComCharge;
+
+abstract class ChildTransaction extends ApiAbstract {
   protected $_parent_uid;
   public $money;
 
   public function __construct($shop_id,$shop_key) {
-    $this->money = new eComCharge_Money();
+    $this->money = new Money();
     parent::__construct($shop_id,$shop_key);
   }
 
@@ -16,7 +18,7 @@ abstract class eComCharge_ChildTransaction extends eComCharge_Api {
     return $this->_parent_uid;
   }
 
-  protected function build_request_message() {
+  protected function _buildRequestMessage() {
     $request = array(
       'request' => array(
         'parent_uid' => $this->getParentUid(),
@@ -24,7 +26,7 @@ abstract class eComCharge_ChildTransaction extends eComCharge_Api {
       ),
     );
 
-    eComCharge_Logger::getInstance()->to_log($request, eComCharge_Logger::DEBUG, get_class() . '::' . __FUNCTION__);
+    Logger::getInstance()->write($request, Logger::DEBUG, get_class() . '::' . __FUNCTION__);
 
     return $request;
   }

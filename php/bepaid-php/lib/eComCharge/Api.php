@@ -1,5 +1,7 @@
 <?php
-abstract class eComCharge_Api {
+namespace eComCharge;
+
+abstract class ApiAbstract {
   protected $_shop_id;
 
   protected $_shop_key;
@@ -15,22 +17,22 @@ abstract class eComCharge_Api {
     $this->_pp_service_url = 'https://checkout.ecomcharge.com';
   }
 
-  protected abstract function build_request_message();
+  protected abstract function _buildRequestMessage();
 
   public function submit() {
-    return new eComCharge_Response($this->remote_request());
+    return new Response($this->_remoteRequest());
   }
 
-  protected function remote_request() {
-    return eComCharge_GatewayTransport::submit( $this->_shop_id, $this->_shop_key, $this->endpoint(), $this->build_request_message() );
+  protected function _remoteRequest() {
+    return GatewayTransport::submit( $this->_shop_id, $this->_shop_key, $this->_endpoint(), $this->_buildRequestMessage() );
   }
 
-  protected function endpoint() {
-    return $this->_service_url . '/' . $this->getTransactionType();
+  protected function _endpoint() {
+    return $this->_service_url . '/' . $this->_getTransactionType();
   }
 
-  protected function getTransactionType() {
-    list($module,$klass) = explode('_', get_class($this));
+  protected function _getTransactionType() {
+    list($module,$klass) = explode('\\', get_class($this));
     $klass = strtolower($klass) . 's';
     return $klass;
   }

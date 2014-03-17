@@ -1,5 +1,7 @@
 <?php
-class eComCharge_Refund extends eComCharge_ChildTransaction {
+namespace eComCharge;
+
+class Refund extends ChildTransaction {
   protected $_reason;
 
   public function setReason($reason) {
@@ -10,8 +12,8 @@ class eComCharge_Refund extends eComCharge_ChildTransaction {
     return $this->_reason;
   }
 
-  protected function build_request_message() {
-    $request = parent::build_request_message();
+  protected function _buildRequestMessage() {
+    $request = parent::_buildRequestMessage();
 
     $request['request']['reason'] = $this->getReason();
 

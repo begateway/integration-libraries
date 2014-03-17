@@ -1,5 +1,6 @@
 <?php
-class eComCharge_QueryByUidTest extends UnitTestCase {
+class QueryByUidTest extends UnitTestCase {
+
   public function test_setUid() {
     $q = $this->getTestObjectInstance();
 
@@ -13,16 +14,16 @@ class eComCharge_QueryByUidTest extends UnitTestCase {
     $q = $this->getTestObjectInstance();
     $q->setUid('1234');
 
-    $reflection = new ReflectionClass('eComCharge_QueryByUid');
-    $method = $reflection->getMethod('endpoint');
+    $reflection = new ReflectionClass('eComCharge\QueryByUid');
+    $method = $reflection->getMethod('_endpoint');
     $method->setAccessible(true);
-    $url = $method->invoke($q, 'endpoint');
+    $url = $method->invoke($q, '_endpoint');
 
     $this->assertEqual($url, 'https://processing.ecomcharge.com/transactions/1234');
 
   }
 
-  public function test_query_request() {
+  public function test_queryRequest() {
     $amount = rand(0,10000);
 
     $parent = $this->runParentTransaction($amount);
@@ -33,20 +34,20 @@ class eComCharge_QueryByUidTest extends UnitTestCase {
 
     $response = $q->submit();
 
-    $this->assertTrue($response->is_valid());
-    $this->assertTrue($response->is_success());
+    $this->assertTrue($response->isValid());
+    $this->assertTrue($response->isSuccess());
     $this->assertNotNull($response->getUid());
     $this->assertEqual($parent->getUid(), $response->getUid());
   }
 
-  public function test_query_response_for_unknown_uid() {
+  public function test_queryResponseForUnknownUid() {
     $q = $this->getTestObjectInstance();
 
     $q->setUid('1234567890qwerty');
 
     $response = $q->submit();
 
-    $this->assertTrue($response->is_valid());
+    $this->assertTrue($response->isValid());
 
     $this->assertEqual($response->getMessage(), 'Record not found');
   }
@@ -54,7 +55,7 @@ class eComCharge_QueryByUidTest extends UnitTestCase {
   protected function runParentTransaction($amount = 10.00 ) {
     authorizeFromEnv();
 
-    $transaction = new eComCharge_Payment(eComCharge_TestData::getShopId(), eComCharge_TestData::getShopKey());
+    $transaction = new eComCharge\Payment(TestData::getShopId(), TestData::getShopKey());
 
     $transaction->money->setAmount($amount);
     $transaction->money->setCurrency('EUR');
@@ -82,10 +83,10 @@ class eComCharge_QueryByUidTest extends UnitTestCase {
   protected function getTestObjectInstance() {
     authorizeFromEnv();
 
-    $id = eComCharge_TestData::getShopId();
-    $key =  eComCharge_TestData::getShopKey();
+    $id = TestData::getShopId();
+    $key =  TestData::getShopKey();
 
-    return new eComCharge_QueryByUid($id, $key);
+    return new eComCharge\QueryByUid($id, $key);
   }
 }
 ?>

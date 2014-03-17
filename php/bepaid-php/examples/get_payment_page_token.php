@@ -1,13 +1,16 @@
 <?php
+namespace eComCharge;
 
 require_once __DIR__ . '/../lib/ecomcharge.php';
 require_once __DIR__ . '/test_shop_data.php';
 
-eComCharge_Logger::getInstance()->setLogLevel(eComCharge_Logger::DEBUG);
+Logger::getInstance()->setLogLevel(Logger::DEBUG);
 
-$transaction = new eComCharge_GetPaymentPageToken(SHOP_ID, SHOP_SECRET_KEY);
+$transaction = new GetPaymentPageToken(SHOP_ID, SHOP_SECRET_KEY);
 
-$transaction->money->setAmount(12.33);
+$amount = rand(100, 10000);
+
+$transaction->money->setAmount($amount);
 $transaction->money->setCurrency('EUR');
 $transaction->setDescription('test');
 $transaction->setTrackingId('my_custom_variable');
@@ -32,9 +35,8 @@ $transaction->setAddressHidden();
 $response = $transaction->submit();
 
 print("Transaction message: " . $response->getMessage() . PHP_EOL);
-print("Transaction status: " . $response->getStatus(). PHP_EOL);
 
-if ($response->is_success() ) {
+if ($response->isSuccess() ) {
   print("Token: " . $response->getToken() . PHP_EOL);
 }
 ?>
