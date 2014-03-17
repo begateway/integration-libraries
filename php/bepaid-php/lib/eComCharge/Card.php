@@ -26,11 +26,7 @@ class Card {
   }
 
   public function setCardExpMonth($exp_month) {
-    try {
-      $this->_card_exp_month = sprintf('%02d', (int)$exp_month);
-    } catch (\Exception $e) {
-      throw new \Exception($e->getMessage());
-    }
+    $this->_card_exp_month = sprintf('%02d', $exp_month);
   }
   public function getCardExpMonth() {
     return $this->_card_exp_month;
