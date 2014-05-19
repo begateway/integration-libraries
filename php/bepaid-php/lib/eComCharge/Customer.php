@@ -85,3 +85,4 @@ class Customer {
     return $this->_customer_phone;
   }
 }
+?>

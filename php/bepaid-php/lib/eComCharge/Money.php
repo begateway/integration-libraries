@@ -75,6 +75,6 @@ class Money {
         }
     }
     return $multiplyer;
-}
+  }
 }
 ?>

@@ -48,4 +48,3 @@ class Credit extends ApiAbstract {
 
 }
 ?>
-
