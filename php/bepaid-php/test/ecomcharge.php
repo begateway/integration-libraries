@@ -86,6 +86,8 @@ require_once(dirname(__FILE__) . '/../lib/ecomcharge.php');
 
 eComCharge\Logger::getInstance()->setLogLevel(eComCharge\Logger::DEBUG);
 
+require_once(dirname(__FILE__) . '/eComCharge/GatewayExceptionTest.php');
+exit;
 require_once(dirname(__FILE__) . '/eComCharge/AuthorizationTest.php');
 require_once(dirname(__FILE__) . '/eComCharge/PaymentTest.php');
 require_once(dirname(__FILE__) . '/eComCharge/CaptureTest.php');
