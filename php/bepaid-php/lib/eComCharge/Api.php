@@ -26,7 +26,7 @@ abstract class ApiAbstract {
       $response = $this->_remoteRequest();
     } catch (\Exception $e) {
       $msg = $e->getMessage();
-      $response = '{ "errors":"' . $msg . '", "message":"' . $e->getMessage() . '" }';
+      $response = '{ "errors":"' . $msg . '", "message":"' . $msg . '" }';
     }
     return new Response($response);
   }
