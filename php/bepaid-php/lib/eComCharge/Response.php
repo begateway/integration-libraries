@@ -41,26 +41,24 @@ class Response extends ResponseBase {
 
   public function getMessage() {
 
-    if (!is_object($this->getResponse())) {
-      return false;
+    if (is_object($this->getResponse())) {
+
+      if (isset($this->getResponse()->message)) {
+
+        return $this->getResponse()->message;
+
+      }elseif (isset($this->getResponse()->transaction)) {
+
+        return $this->getResponse()->transaction->message;
+
+      }elseif (is_object($this->getResponse()->response)) {
+
+        return $this->getResponse()->response->message;
+
+      }
     }
 
-
-    if (isset($this->getResponse()->message)) {
-
-      return $this->getResponse()->message;
-
-    }elseif (isset($this->getResponse()->transaction)) {
-
-      return $this->getResponse()->transaction->message;
-
-    }elseif (is_object($this->getResponse()->response)) {
-
-      return $this->getResponse()->response->message;
-
-    }
-
-    return false;
+    return '';
 
   }
 }
