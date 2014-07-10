@@ -1,13 +1,9 @@
 <?php
-class GatewayExceptionTest extends UnitTestCase {
-
-  public function ttest_gatewayNetworkError() {
-    $transport = eComCharge\GatewayTransport::submit( 'default', 'default', 'https://thedomaindoesntexist.ecomcharge.com', '' );
-  }
+class GatewayTransportExceptionTest extends UnitTestCase {
 
   public function test_successAuthorization() {
     $auth = $this->getTestObject();
- 
+
     $reflection = new ReflectionClass('eComCharge\Authorization');
     $property = $reflection->getProperty('_service_url');
     $property->setAccessible(true);
@@ -20,12 +16,8 @@ class GatewayExceptionTest extends UnitTestCase {
 
     $response = $auth->submit();
 
-    $this->assertTrue($response->isValid());
-    $this->assertTrue($response->isSuccess());
-    $this->assertEqual($response->getMessage(), 'Successfully processed');
-    $this->assertNotNull($response->getUid());
-    $this->assertEqual($response->getStatus(), 'successful');
-    $this->assertEqual($cents, $response->getResponse()->transaction->amount);
+    $this->assertTrue($response->isError());
+    $this->assertPattern('|Could not resolve host: thedomaindoesntexist.ecomcharge.com|', $response->getMessage());
 
   }
 

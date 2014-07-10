@@ -22,7 +22,13 @@ abstract class ApiAbstract {
   protected abstract function _buildRequestMessage();
 
   public function submit() {
-    return new Response($this->_remoteRequest());
+    try {
+      $response = $this->_remoteRequest();
+    } catch (\Exception $e) {
+      $msg = $e->getMessage();
+      $response = '{ "errors":"' . $msg . '", "message":"' . $e->getMessage() . '" }';
+    }
+    return new Response($response);
   }
 
   protected function _remoteRequest() {
