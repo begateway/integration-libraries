@@ -98,8 +98,7 @@ class CreditTest extends UnitTestCase {
 
     $this->assertTrue($t_response->isValid());
     $this->assertTrue($t_response->isError());
-    $this->assertTrue(preg_match('/Credit card with this token hasn\'t successful payment or capture. Token does not exist./', $t_response->getMessage()));
-
+    $this->assertPattern('|Credit card with this token hasn\'t successful payment or capture. Token does not exist.|', $t_response->getMessage());
   }
 
   protected function runParentTransaction($amount = 10.00 ) {
