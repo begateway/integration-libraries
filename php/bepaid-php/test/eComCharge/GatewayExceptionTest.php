@@ -1,7 +1,7 @@
 <?php
 class GatewayTransportExceptionTest extends UnitTestCase {
 
-  public function test_successAuthorization() {
+  public function test_networkIssuesHandledCorrectly() {
     $auth = $this->getTestObject();
 
     $reflection = new ReflectionClass('eComCharge\Authorization');
