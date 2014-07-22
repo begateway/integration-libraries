@@ -21,6 +21,7 @@ require_once (__DIR__ . '/eComCharge/Money.php');
 require_once (__DIR__ . '/eComCharge/ResponseBase.php');
 require_once (__DIR__ . '/eComCharge/Response.php');
 require_once (__DIR__ . '/eComCharge/ResponseCheckout.php');
+require_once (__DIR__ . '/eComCharge/ResponseCardToken.php');
 require_once (__DIR__ . '/eComCharge/Api.php');
 require_once (__DIR__ . '/eComCharge/ChildTransaction.php');
 require_once (__DIR__ . '/eComCharge/GatewayTransport.php');
@@ -35,5 +36,6 @@ require_once (__DIR__ . '/eComCharge/QueryByTrackingId.php');
 require_once (__DIR__ . '/eComCharge/QueryByToken.php');
 require_once (__DIR__ . '/eComCharge/GetPaymentPageToken.php');
 require_once (__DIR__ . '/eComCharge/Webhook.php');
+require_once (__DIR__ . '/eComCharge/CardToken.php');
 
 ?>

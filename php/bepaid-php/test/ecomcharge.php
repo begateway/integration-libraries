@@ -97,4 +97,5 @@ require_once(dirname(__FILE__) . '/eComCharge/QueryByUidTest.php');
 require_once(dirname(__FILE__) . '/eComCharge/QueryByTrackingIdTest.php');
 require_once(dirname(__FILE__) . '/eComCharge/QueryByTokenTest.php');
 require_once(dirname(__FILE__) . '/eComCharge/WebhookTest.php');
+require_once(dirname(__FILE__) . '/eComCharge/CreditCardTokenizationTest.php');
 ?>

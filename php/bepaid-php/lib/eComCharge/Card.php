@@ -7,6 +7,9 @@ class Card {
   protected $_card_exp_month;
   protected $_card_exp_year;
   protected $_card_cvc;
+  protected $_first_1;
+  protected $_last_4;
+  protected $_brand;
   protected $_card_token = null;
   protected $_card_skip_threed_secure = false;
 
@@ -58,6 +61,25 @@ class Card {
   }
   public function getSkip3D() {
     return $this->_card_skip_threed_secure;
+  }
+
+  public function setBrand($brand) {
+    $this->_brand = $brand;
+  }
+  public function getBrand() {
+    return $this->_brand;
+  }
+  public function setFirst_1($digit) {
+    $this->_first_1 = $digit;
+  }
+  public function getFirst_1() {
+    return $this->_first_1;
+  }
+  public function setLast_4($digits) {
+    $this->_last_4 = $digits;
+  }
+  public function getLast_4() {
+    return $this->_last_4;
   }
 }
 ?>

@@ -6,6 +6,7 @@ abstract class ApiAbstract {
 
   protected $_shop_key;
 
+  protected $_service_domain;
   protected $_service_url;
   protected $_pp_service_url;
 
@@ -13,7 +14,8 @@ abstract class ApiAbstract {
     $this->_shop_id = $shop_id;
     $this->_shop_key = $shop_key;
 
-    $this->_service_url = 'https://processing.ecomcharge.com/transactions';
+    $this->_service_domain = 'https://processing.ecomcharge.com';
+    $this->_service_url = $this->_service_domain . '/transactions';
     $this->_pp_service_url = 'https://checkout.ecomcharge.com';
   }
 
