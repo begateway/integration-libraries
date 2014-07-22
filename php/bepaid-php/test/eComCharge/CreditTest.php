@@ -98,7 +98,7 @@ class CreditTest extends UnitTestCase {
 
     $this->assertTrue($t_response->isValid());
     $this->assertTrue($t_response->isError());
-    $this->assertTrue(preg_match('/Reason can\'t be blank./', $t_response->getMessage()));
+    $this->assertTrue(preg_match('/Credit card with this token hasn\'t successful payment or capture. Token does not exist./', $t_response->getMessage()));
 
   }
 
