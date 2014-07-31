@@ -180,7 +180,7 @@ class AuthorizationTest extends UnitTestCase {
 
     $this->assertTrue($response->isValid());
     $this->assertTrue($response->isError());
-    $this->assertEqual($response->getMessage(), 'Date is expired.');
+    $this->assertEqual($response->getMessage(), 'Date is expired. Exp year Invalid. Format should be: yyyy.');
     $this->assertEqual($response->getStatus(), 'error');
 
   }
