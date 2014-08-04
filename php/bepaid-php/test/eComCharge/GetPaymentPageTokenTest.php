@@ -204,5 +204,3 @@ class GetPaymentPageTokenTest extends UnitTestCase {
 
 }
 ?>
-
-

@@ -37,7 +37,7 @@ class Logger {
       case self::WARNING : return 'WARNING'; break;
       case self::DEBUG : return 'DEBUG'; break;
       default:
-        throw new Exception('Unknown log level ' . $level);
+        throw new \Exception('Unknown log level ' . $level);
       }
   }
 

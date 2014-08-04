@@ -28,7 +28,7 @@ class GatewayTransport {
         curl_close($process);
 
         if ($response === false) {
-          throw new Exception("cURL error " . $error);
+          throw new \Exception("cURL error " . $error);
         }
 
         Logger::getInstance()->write("Response $response", Logger::DEBUG, get_class() );

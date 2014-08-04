@@ -211,5 +211,3 @@ class PaymentTest extends UnitTestCase {
 
 }
 ?>
-
-

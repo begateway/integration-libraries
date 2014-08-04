@@ -84,7 +84,7 @@ error_reporting(E_ALL | E_STRICT);
 require_once(dirname(__FILE__) . '/../lib/ecomcharge.php');
 
 
-eComCharge\Logger::getInstance()->setLogLevel(eComCharge\Logger::DEBUG);
+eComCharge\Logger::getInstance()->setLogLevel(eComCharge\Logger::INFO);
 
 require_once(dirname(__FILE__) . '/eComCharge/AuthorizationTest.php');
 require_once(dirname(__FILE__) . '/eComCharge/PaymentTest.php');
@@ -97,5 +97,6 @@ require_once(dirname(__FILE__) . '/eComCharge/QueryByUidTest.php');
 require_once(dirname(__FILE__) . '/eComCharge/QueryByTrackingIdTest.php');
 require_once(dirname(__FILE__) . '/eComCharge/QueryByTokenTest.php');
 require_once(dirname(__FILE__) . '/eComCharge/WebhookTest.php');
+require_once(dirname(__FILE__) . '/eComCharge/GatewayExceptionTest.php');
 require_once(dirname(__FILE__) . '/eComCharge/CreditCardTokenizationTest.php');
 ?>
