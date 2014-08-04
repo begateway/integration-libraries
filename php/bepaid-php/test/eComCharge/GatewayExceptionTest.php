@@ -65,4 +65,3 @@ class GatewayTransportExceptionTest extends UnitTestCase {
 
 }
 ?>
-

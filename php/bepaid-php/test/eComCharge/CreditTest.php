@@ -152,5 +152,3 @@ class CreditTest extends UnitTestCase {
   }
 }
 ?>
-
-
