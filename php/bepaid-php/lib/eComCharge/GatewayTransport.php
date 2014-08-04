@@ -22,6 +22,7 @@ class GatewayTransport {
         curl_setopt($process, CURLOPT_USERPWD, $shop_id . ":" . $shop_key);
         curl_setopt($process, CURLOPT_TIMEOUT, 30);
         curl_setopt($process, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($process, CURLOPT_SSL_VERIFYPEER, false);
         $response = curl_exec($process);
         $error = curl_error($process);
         curl_close($process);
